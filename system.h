@@ -58,6 +58,7 @@ void clear_vga_buffer(uint16 **buffer, uint8 fore_color, uint8 back_color)
   }
 
   vga_index = 0;
+  next_line_index = 0;
 }
 
 void init_term(uint8 fore_color, uint8 back_color)
@@ -70,7 +71,7 @@ void scroll(uint8 fore_color)
 {
     clear_vga_buffer(&vga_buffer, fore_color, g_bg);
     vga_index = 0;
-    next_line_index = 0;
+    next_line_index = 1;
 }
 
 void newline()
