@@ -10,8 +10,8 @@
 
 void gdt_good()
 {
-    messages(OK, "KERNEL LOADED!");
-    newline();
+    messages(OK, "KERNEL LOADED! \n");
+
     messages(OK, "GDT LOADED!");
     newline();
     newline();
@@ -26,6 +26,6 @@ void kernel_entry()
     init_term(WHITE, g_bg);
     init_descriptor_tables();
 
-    printstring("Welcome to ZecelOS!", WHITE, g_bg);
-    newline();
+    printstring("Welcome to ZecelOS! \n", WHITE, g_bg);
+    printstring("Codename: Bomber \n", WHITE, g_bg);
 }

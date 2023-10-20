@@ -66,23 +66,6 @@ void init_term(uint8 fore_color, uint8 back_color)
   clear_vga_buffer(&vga_buffer, fore_color, back_color);
 }
 
-void printchar(char ch, uint8 fore_color, uint8 back_color)
-{
-    vga_buffer[vga_index] = vga_entry(ch, fore_color, back_color);
-    vga_index++;
-}
-
-void printstring(const char* str, uint8 fore_color, uint8 back_color)
-{
-    uint32 index = 0;
-
-    while(str[index])
-    {
-        printchar(str[index], fore_color, back_color);
-        index++;
-    }
-}
-
 void scroll(uint8 fore_color)
 {
     clear_vga_buffer(&vga_buffer, fore_color, g_bg);
@@ -100,6 +83,32 @@ void newline()
     vga_index = 80*next_line_index;
     next_line_index++;
 
+}
+
+void printchar(char ch, uint8 fore_color, uint8 back_color)
+{
+    switch(ch)
+    {
+      case '\n':
+        newline();
+        break;
+
+      default:
+        vga_buffer[vga_index] = vga_entry(ch, fore_color, back_color);
+        vga_index++;
+        break;
+    }
+}
+
+void printstring(const char* str, uint8 fore_color, uint8 back_color)
+{
+    uint32 index = 0;
+
+    while(str[index])
+    {
+        printchar(str[index], fore_color, back_color);
+        index++;
+    }
 }
 
 const char* OK = "OK";
