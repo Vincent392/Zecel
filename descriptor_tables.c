@@ -45,4 +45,36 @@ static void init_gdt()
 void init_descriptor_tables()
 {
 	init_gdt();
+	idt_init();
+}
+
+idtr_g idtr_t;
+idt_entry_g idt_entry_t;
+
+static idt_entry_g idt[256];
+
+void idt_set_descriptor(uint8 vector, void* isr, uint8 flags)
+{
+	idt_entry_g* descriptor = &idt[vector];
+
+	descriptor->isr_low = (uint32)isr & 0xFFFF;
+	descriptor->kernel_cs = 0x08;
+	descriptor->isr_high = (uint32)isr >> 16;
+	descriptor->reserved = 0;
+}
+
+extern void* isr_stub_table[];
+
+void idt_init()
+{
+	idtr_t.base = (uint32)&idt[0];
+	idtr_t.limit = (uint16)sizeof(idt_entry_t) * 256 - 1;
+
+	for(uint8 vector = 0; vector < 32; vector++)
+	{
+		idt_set_descriptor(vector, isr_stub_table[vector], 0x8E);
+	}
+
+	__asm__ volatile ("lidt %0" : : "m"(idtr_t));
+	__asm__ volatile ("sti");
 }

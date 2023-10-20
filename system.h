@@ -151,4 +151,38 @@ void messages(const char* type, const char* message)
     printstring(message, WHITE, g_bg);
 }
 
+void outb(uint16 port, uint8 value)
+{
+    asm volatile ("outb %1, %0" : : "dN" (port), "a"(value));
+}
+
+
+uint8 inb(uint16 port)
+{
+   uint8 ret;
+   asm volatile("inb %1, %0" : "=a" (ret) : "dN" (port));
+   return ret;
+}
+
+uint16 inw(uint16 port)
+{
+   uint16 ret;
+   asm volatile ("inw %1, %0" : "=a" (ret) : "dN" (port));
+   return ret;
+}
+
+void memcpy(uint8 *dest, const uint8 *src, uint32 len)
+{
+    const uint8 *sp = (const uint8 *)src;
+    uint8 *dp = (uint8 *)dest;
+    for(; len != 0; len--) *dp++ = *sp++;
+}
+
+// Write len copies of val into dest.
+void memset(uint8 *dest, uint8 val, uint32 len)
+{
+    uint8 *temp = (uint8 *)dest;
+    for ( ; len != 0; len--) *temp++ = val;
+}
+
 #endif

@@ -28,3 +28,26 @@ struct gdt_ptr
 typedef struct gdt_ptr gdt_ptr_t;
 
 void init_descriptor_tables();
+
+struct idt_entry
+{
+
+    uint16 isr_low;
+    uint16 kernel_cs;
+    uint8 reserved;
+    uint8 attributes;
+    uint16 isr_high;
+
+}__attribute__((packed));
+
+typedef struct idt_entry idt_entry_g;
+
+struct idtr
+{
+
+    uint16 limit;
+    uint32 base;
+
+}__attribute__((packed));
+
+typedef struct idtr idtr_g;

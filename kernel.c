@@ -8,17 +8,21 @@
     Authors: Kap Petrov
 */
 
+const char* username;
+
 void gdt_good()
 {
     messages(OK, "KERNEL LOADED! \n");
 
-    messages(OK, "GDT LOADED!");
+    messages(OK, "GDT LOADED! \n");
+
+    messages(OK, "IDT LOADED! \n");
     newline();
     newline();
     newline();
     newline();
     newline();
-    newline();
+    username = "balls";
 }
 
 void kernel_entry()
@@ -28,4 +32,13 @@ void kernel_entry()
 
     printstring("Welcome to ZecelOS! \n", WHITE, g_bg);
     printstring("Codename: Bomber \n", WHITE, g_bg);
+
+    asm volatile ("int $0x3");
+
+    if(username == "OSDEV")
+    {
+
+        messages(FAILURE, "<- You All For Real.");
+
+    }
 }
