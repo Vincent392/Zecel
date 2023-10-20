@@ -33,8 +33,6 @@ void kernel_entry()
     printstring("Welcome to ZecelOS! \n", WHITE, g_bg);
     printstring("Codename: Bomber \n", WHITE, g_bg);
 
-    asm volatile ("int $0x3");
-
     if(username == "OSDEV")
     {
 
