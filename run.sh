@@ -2,13 +2,18 @@
 #assemble boot.s file
 as --32 boot.s -o boot.o
 
-#compile kernel.c file
-gcc -m32 -c kernel.c -o kernel.o -std=gnu99 -ffreestanding -O2 -Wall -Wextra
-gcc -m32 -c descriptor_tables.c -o descriptor_tables.o -std=gnu99 -ffreestanding -O2 -Wall -Wextra
-gcc -m32 -c isr.c -o isr.o -std=gnu99 -ffreestanding -O2 -Wall -Wextra
+nasm -f elf arch/x86/idt.asm -o idt.o
+nasm -f elf arch/x86/isr.asm -o isr.o
 
-#linking the kernel with kernel.o and boot.o files
-ld -m elf_i386 -T linker.ld kernel.o boot.o descriptor_tables.o isr.o -o ZecelOS.bin -nostdlib
+#compile kernel.c file
+gcc -m32 -c arch/x86/system.c -o system.o -std=gnu99 -ffreestanding -O2 -Wall -Wextra
+gcc -m32 -c kernel.c -o kernel.o -std=gnu99 -ffreestanding -O2 -Wall -Wextra
+gcc -m32 -c arch/x86/descriptor_tables.c -o descriptor_tables.o -std=gnu99 -ffreestanding -O2 -Wall -Wextra
+gcc -m32 -c arch/x86/isrs_gen.c -o isrs_genc.o -std=gnu99 -ffreestanding -O2 -Wall -Wextra
+gcc -m32 -c arch/x86/isr.c -o isrc.o -std=gnu99 -ffreestanding -O2 -Wall -Wextra
+
+
+ld -m elf_i386 -T linker.ld system.o kernel.o boot.o descriptor_tables.o idt.o isr.o isrc.o -o ZecelOS.bin -nostdlib
 
 grub-file --is-x86-multiboot ZecelOS.bin
 
