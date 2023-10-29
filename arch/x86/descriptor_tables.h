@@ -6,6 +6,7 @@
 */
 
 #include "types.h"
+#include "system.h"
 
 void init_descriptor_tables();
 

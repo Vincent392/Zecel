@@ -307,7 +307,3 @@ isr_common:
 	popa
 	add esp, 8
 	iret
-
-global crash_me
-crash_me:
-	ret

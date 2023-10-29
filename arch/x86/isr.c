@@ -568,9 +568,26 @@ void initisr()
 
 void __attribute__((cdecl)) ISR_Handler(Registers* regs)
 {
-// 	messages(TEST, "An Interrupt Has Occurred, Interrupt Number: ");
-// 	print_uint32(regs->interrupt, WHITE, g_bg, FALSE);
-// 	printstring("\n", WHITE, g_bg);
+	g_bg = BLUE;
+	printf("\n");
+	printf("\n");
+	printf("\n");
+	printf("\n");
+	printf("\n");
+	printf("\n");
+	printf("\n");
+	printf("\n");
+	printf("\n");
+	printf("\n");
+	printf("\n");
+	printf("\n");
+	printf("\n");
+	printf("\n");
+	printf("\n");
+	printf("\n");
+	printf("\n");
+	printf("\n");
+	printf("\n");
 
 	if(g_ISRHandlers[regs->interrupt] != NULL)
 		g_ISRHandlers[regs->interrupt](regs);
@@ -578,55 +595,56 @@ void __attribute__((cdecl)) ISR_Handler(Registers* regs)
 	if (regs->interrupt >= 32)
 	{
 		messages(TEST, "Unhandled interrupt ");
-		print_uint32(regs->interrupt, WHITE, g_bg, FALSE);
+		print_uint32(regs->interrupt, FALSE);
 	} else
 	{
-		messages(FAILURE, "Unhandled Exception ");
-		print_uint32(regs->interrupt, WHITE, g_bg, FALSE);
-		printstring("\n", WHITE, g_bg);
-		printstring(g_Exceptions[regs->interrupt], WHITE, g_bg);
-		printstring("\nerrorcode = ", WHITE, g_bg);
-		print_uint32(regs->error, WHITE, g_bg, FALSE);
+		messages(FAILURE, "\n \n");
+        printf("Unhandled Exception ");
+		print_uint32(regs->interrupt, FALSE);
+		printf("\n");
+		printf(g_Exceptions[regs->interrupt]);
+		printf("\nerrorcode = ");
+		print_uint32(regs->error, FALSE);
 
-		printstring(", ", WHITE, g_bg);
+		printf(", ");
 
-		printstring("eax = ", WHITE, g_bg);
-		print_uint32(regs->eax, WHITE, g_bg, FALSE);
-		printstring(", ", WHITE, g_bg);
+		printf("eax = ");
+		print_uint32(regs->eax, FALSE);
+		printf(", ");
 
-		printstring("ecx = ", WHITE, g_bg);
-		print_uint32(regs->ecx, WHITE, g_bg, FALSE);
-		printstring(", ", WHITE, g_bg);
+		printf("ecx = ");
+		print_uint32(regs->ecx, FALSE);
+		printf(", ");
 
-		printstring("edx = ", WHITE, g_bg);
-		print_uint32(regs->edx, WHITE, g_bg, FALSE);
-		printstring(", ", WHITE, g_bg);
+		printf("edx = ");
+		print_uint32(regs->edx, FALSE);
+		printf(", ");
 
-		printstring("ebx = ", WHITE, g_bg);
-		print_uint32(regs->ebx, WHITE, g_bg, FALSE);
-		printstring(", ", WHITE, g_bg);
+		printf("ebx = ");
+		print_uint32(regs->ebx, FALSE);
+		printf(", ");
 
-		printstring("ebp = ", WHITE, g_bg);
-		print_uint32(regs->ebp, WHITE, g_bg, FALSE);
-		printstring(", ", WHITE, g_bg);
+		printf("ebp = ");
+		print_uint32(regs->ebp, FALSE);
+		printf(", ");
 
-		printstring("esi = ", WHITE, g_bg);
-		print_uint32(regs->esi, WHITE, g_bg, FALSE);
-		printstring(", ", WHITE, g_bg);
+		printf("esi = ");
+		print_uint32(regs->esi, FALSE);
+		printf(", ");
 
-		printstring("edi = ", WHITE, g_bg);
-		print_uint32(regs->edi, WHITE, g_bg, FALSE);
-		printstring(", ", WHITE, g_bg);
+		printf("edi = ");
+		print_uint32(regs->edi, FALSE);
+		printf(", ");
 
-		printstring("eip = ", WHITE, g_bg);
-		print_uint32(regs->eip, WHITE, g_bg, FALSE);
-		printstring(", ", WHITE, g_bg);
+		printf("eip = ");
+		print_uint32(regs->eip, FALSE);
+		printf(", ");
 
-		printstring("esp = ", WHITE, g_bg);
-		print_uint32(regs->esp, WHITE, g_bg, FALSE);
-		printstring("\n", WHITE, g_bg);
-		printstring("\n", WHITE, g_bg);
-		printstring("\n", WHITE, g_bg);
+		printf("esp = ");
+		print_uint32(regs->esp, FALSE);
+		printf("\n");
+		printf("\n");
+		printf("\n");
 
 		__asm("cli; hlt");
 	}

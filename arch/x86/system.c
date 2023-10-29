@@ -1,13 +1,14 @@
 
 #include "system.h"
 
-const char* OK = "OK";
-const char* FAILURE = "FAILURE";
+const char* OK = " OK ";
+const char* FAILURE = "FATAL";
 const char* WARNING = "WARN";
 const char* TEST = "INFO";
 const char* ERROR = "ERROR";
 uint8 fc;
 uint8 g_bg = MAGENTA;
+uint8 g_fg = WHITE;
 
 uint16* vga_buffer;
 
@@ -80,13 +81,13 @@ void printchar(char ch, uint8 fore_color, uint8 back_color)
     }
 }
 
-void printstring(const char* str, uint8 fore_color, uint8 back_color)
+void printf(const char* str)
 {
     uint32 index = 0;
 
     while(str[index])
     {
-        printchar(str[index], fore_color, back_color);
+        printchar(str[index], g_fg, g_bg);
         index++;
     }
 }
@@ -118,10 +119,15 @@ void messages(const char* type, const char* message)
         fc = BLUE;
     }
 
-    printstring("[", WHITE, g_bg);
-    printstring(type, fc, g_bg);
-    printstring("] ", WHITE, g_bg);
-    printstring(message, WHITE, g_bg);
+    g_fg = fc;
+
+    printf("[");
+    printf(type);
+    printf("] ");
+
+    g_fg = WHITE;
+
+    printf(message);
 }
 
 void outb(uint16 port, uint8 value)
@@ -166,33 +172,6 @@ int strcmp(const char* str1, const char* str2) {
     return *(uint8*)str1 - *(uint8*)str2;
 }
 
-void panic(const char* errorcode)
-{
-        g_bg = RED;
-
-        init_term(WHITE, g_bg);
-
-        messages(FAILURE, "UNRESOLVED PANIC ");
-        printstring(errorcode, WHITE, g_bg);
-        vga_index = 80*1;
-        const char* message;
-
-        if(strcmp(errorcode, "0x0001") == 0)
-        {
-            message = "TEST ERRORCODE, THERES NOTHING TO WORRY ABOUT. (RESTART YOUR SYSTEM)";
-        }
-
-        else
-        {
-            message = "UNKNOWN ERRORCODE, PLEASE RESTART YOUR SYSTEM.";
-        }
-
-        messages(TEST, message);
-
-        asm volatile ("cli");
-        asm volatile ("hlt");
-}
-
 void uint32_to_string(uint32 num, char* str, BOOL is_signed) {
     uint32 temp = num;
     int i = 0;
@@ -223,8 +202,13 @@ void uint32_to_string(uint32 num, char* str, BOOL is_signed) {
     }
 }
 
-void print_uint32(uint32 num, uint8 fore_color, uint8 back_color, BOOL is_signed) {
+void print_uint32(uint32 num, BOOL is_signed) {
     char str[11]; // Enough to hold "-2147483648\0"
     uint32_to_string(num, str, is_signed);
-    printstring(str, fore_color, back_color);
+    printf(str);
+}
+
+void io_wait()
+{
+    outb(UNUSED_PORT, 0);
 }

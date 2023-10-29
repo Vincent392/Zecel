@@ -1,16 +1,10 @@
 
 #include "arch/x86/system.h"
-#include "arch/x86/descriptor_tables.h"
-
-/*
-    kernel.c - Main Kernel
-
-    Authors: Kap Petrov
-*/
+#include "arch/hal/hal.h"
 
 void gdt_good()
 {
-    messages(OK, "KERNEL LOADE \n");
+    messages(OK, "\n");
 
     messages(OK, "GDT LOADED! \n");
 
@@ -18,15 +12,16 @@ void gdt_good()
 
 void idt_good()
 {
-    messages(OK, "IDT LOADED! \n");
+    messages(OK, "IDT LOADED! \n \n");
 }
 
 void kernel_entry()
 {
-    init_term(WHITE, g_bg);
-    init_descriptor_tables();
+    init_term(g_fg, g_bg);
+    hal_init();
 
-    printstring("Welcome to ZecelOS! \n", WHITE, g_bg);
-    printstring("Codename: Bomber \n", WHITE, g_bg);
-    newline();
+    printf("Welcome to ZecelOS! \n");
+    printf("Codename: Bomber \n \n");
+
+    crash_me();
 }

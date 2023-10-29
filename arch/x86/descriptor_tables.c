@@ -47,8 +47,6 @@ static void init_gdt()
 void init_descriptor_tables()
 {
 	init_gdt();
-	IDT_Init();
-	initisr();
 }
 
 typedef struct
