@@ -1,9 +1,8 @@
 
 #pragma once
 
-#include "types.h"
-#include "system.h"
-#include "isrs_gen.h"
+#include "lib/stdint.h"
+#include "lib/stdio.h"
 
 typedef struct {
 
@@ -18,4 +17,5 @@ void initisr();
 
 typedef void (*ISRHANDLER)(Registers* regs);
 
-void ISRRegisterHandler(int interrupt);
+void ISRRegisterHandler(int interrupt, ISRHANDLER handler);
+void ISR_InitializeGates();

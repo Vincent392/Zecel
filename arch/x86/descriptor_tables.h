@@ -5,8 +5,8 @@
     Authors: Kap Petrov
 */
 
-#include "types.h"
-#include "system.h"
+#include "lib/stdint.h"
+#include "lib/stdio.h"
 
 void init_descriptor_tables();
 

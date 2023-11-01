@@ -594,11 +594,11 @@ void __attribute__((cdecl)) ISR_Handler(Registers* regs)
 
 	if (regs->interrupt >= 32)
 	{
-		messages(TEST, "Unhandled interrupt ");
+		log(TEST, "Unhandled interrupt ");
 		print_uint32(regs->interrupt, FALSE);
 	} else
 	{
-		messages(FAILURE, "\n \n");
+		log(FAILURE, "\n \n");
         printf("Unhandled Exception ");
 		print_uint32(regs->interrupt, FALSE);
 		printf("\n");
@@ -648,4 +648,10 @@ void __attribute__((cdecl)) ISR_Handler(Registers* regs)
 
 		__asm("cli; hlt");
 	}
+}
+
+void ISRRegisterHandler(int interrupt, ISRHANDLER handler)
+{
+    g_ISRHandlers[interrupt] = handler;
+    IDT_EnableGate(interrupt);
 }
