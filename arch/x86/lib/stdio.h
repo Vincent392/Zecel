@@ -49,6 +49,12 @@ uint16 vga_entry(unsigned char ch, uint8 fore_color, uint8 back_color);
 
 void clear_vga_buffer(uint16 **buffer, uint8 fore_color, uint8 back_color);
 
+void disable_cursor();
+
+void enable_cursor(uint8 cursor_start, uint8 cursor_end);
+
+void update_cursor(int x, int y);
+
 void init_term(uint8 fore_color, uint8 back_color);
 
 void scroll(uint8 fore_color);

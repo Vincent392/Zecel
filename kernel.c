@@ -20,8 +20,8 @@ void kernel_entry()
     init_term(g_fg, g_bg);
     hal_init();
 
-    resetfg();
+	resetfg();
 
     printf("Welcome to ZecelOS! \n");
-    printf("Codename: Bomber \t");
+    printf("Codename: Bomber\n");
 }

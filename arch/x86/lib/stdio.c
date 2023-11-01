@@ -14,6 +14,9 @@ uint16* vga_buffer;
 
 uint32 vga_index;
 
+static int cursor_x = 0;
+static int cursor_y = 0;
+
 uint16 vga_entry(unsigned char ch, uint8 fore_color, uint8 back_color)
 {
   uint16 ax = 0;
@@ -41,10 +44,38 @@ void clear_vga_buffer(uint16 **buffer, uint8 fore_color, uint8 back_color)
   next_line_index = 0;
 }
 
+void disable_cursor()
+{
+    outb(0x3D4, 0x0A);
+    outb(0x3D5, 0x20);
+}
+
+void enable_cursor(uint8 cursor_start, uint8 cursor_end)
+{
+    outb(0x3D4, 0x0A);
+	outb(0x3D5, (inb(0x3D5) & 0xC0) | cursor_start);
+ 
+	outb(0x3D4, 0x0B);
+	outb(0x3D5, (inb(0x3D5) & 0xE0) | cursor_end);
+}
+
+void update_cursor(int x, int y)
+{
+    uint16 pos = y * 80 + x;
+ 
+	outb(0x3D4, 0x0F);
+	outb(0x3D5, (uint8) (pos & 0xFF));
+	outb(0x3D4, 0x0E);
+	outb(0x3D5, (uint8) ((pos >> 8) & 0xFF));
+}
+
 void init_term(uint8 fore_color, uint8 back_color)
 {
-  vga_buffer = (uint16*)VGA_ADDRESS;
-  clear_vga_buffer(&vga_buffer, fore_color, back_color);
+    vga_buffer = (uint16*)VGA_ADDRESS;
+    clear_vga_buffer(&vga_buffer, fore_color, back_color);
+
+    enable_cursor(0, 28);
+    update_cursor(cursor_x, cursor_y);
 }
 
 void scroll(uint8 fore_color)
@@ -63,7 +94,7 @@ void newline()
 
     vga_index = 80*next_line_index;
     next_line_index++;
-
+    cursor_y++;
 }
 
 void printchar(char ch, uint8 fore_color, uint8 back_color)
@@ -74,16 +105,14 @@ void printchar(char ch, uint8 fore_color, uint8 back_color)
         newline();
         break;
 
-      case '\t':
-        newline();
-        newline();
-        break;
-
       default:
         vga_buffer[vga_index] = vga_entry(ch, fore_color, back_color);
         vga_index++;
         break;
     }
+
+    cursor_x++;
+    update_cursor(cursor_x, cursor_y - 2);
 }
 
 void printf(const char* str)
@@ -94,6 +123,12 @@ void printf(const char* str)
     {
         printchar(str[index], g_fg, g_bg);
         index++;
+
+        if(index >= 30)
+            cursor_y++;
+            cursor_x = 0;
+
+        cursor_x = index - 1;
     }
 }
 
