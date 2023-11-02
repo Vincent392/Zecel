@@ -22,6 +22,8 @@ void kernel_entry()
 
 	resetfg();
 
-    printf("Welcome to ZecelOS! \n");
-    printf("Codename: Bomber\n");
+    printf("Welcome to ZecelOS!\n");
+    printf("Codename: Bomber\t");
+
+    printf("Version Number 0.0.1\n");
 }

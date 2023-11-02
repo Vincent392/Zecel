@@ -105,6 +105,11 @@ void printchar(char ch, uint8 fore_color, uint8 back_color)
         newline();
         break;
 
+      case '\t':
+        newline();
+        newline();
+        break;
+
       default:
         vga_buffer[vga_index] = vga_entry(ch, fore_color, back_color);
         vga_index++;
