@@ -33,4 +33,4 @@ all:
 	rm *.iso
 	rm *.bin
 
-#	clear
+	clear
